@@ -1,5 +1,5 @@
 {
-  "name": "protractor",
+  "name": "@immoweb/protractor",
   "description": "Webdriver E2E test wrapper for Angular. - Immoweb fork",
   "homepage": "https://github.com/Immoweb/protractor",
   "keywords": [
@@ -11,7 +11,7 @@
     "selenium",
     "immoweb"
   ],
-  "author": "Julie Ralph <ju.ralph@gmail.com>",
+  "author": "Josep Mateu Clemente <jmateu.clemente@gmail.com>",
   "dependencies": {
     "@types/node": "^6.0.46",
     "@types/q": "^0.0.32",
