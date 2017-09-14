@@ -23,6 +23,7 @@ Once you are familiar with the tutorial, you’re ready to move on. To modify yo
 
 To better understand how Protractor works with the Selenium WebDriver and Selenium Server see the reference materials.
 
+This fork aims to bring protractor support for iOS and Android Native Applications that use Embedded Webviews using Angular.
 
 Getting Help
 ------------
