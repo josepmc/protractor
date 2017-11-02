@@ -278,16 +278,15 @@ export class Runner extends EventEmitter {
           return browser_.waitForAngularEnabled(initProperties.waitForAngularEnabled);
         })
         .then(() => {
-          return driver.manage()
-            .timeouts()
-            .setScriptTimeout(initProperties.allScriptsTimeout)
-            .then(
-            null,
-            (error: Error) => console.log(
-              `Couldn't set the timeout to ${initProperties.allScriptsTimeout}.
-                          The following error ocurred: ${error}`
-            ));
+          return driver.manage().timeouts().setScriptTimeout(
+            initProperties.allScriptsTimeout || 0);
         })
+        .then(
+        null,
+        (error: Error) => console.log(
+          `Couldn't set the timeout to ${initProperties.allScriptsTimeout}.
+                          The following error ocurred: ${error}`
+        ))
         .then(() => {
           return browser_;
         });
