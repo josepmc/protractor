@@ -1,14 +1,15 @@
 {
-  "name": "protractor",
-  "description": "Webdriver E2E test wrapper with support for Angular, Mobile and concurrent browser testing.",
-  "homepage": "https://github.com/angular/protractor",
+  "name": "@immoweb/protractor",
+  "description": "Webdriver E2E test wrapper for Angular. - Immoweb fork",
+  "homepage": "https://github.com/Immoweb/protractor",
   "keywords": [
     "angular",
     "test",
     "testing",
     "webdriver",
     "webdriverjs",
-    "selenium"
+    "selenium",
+    "immoweb"
   ],
   "author": "Josep Mateu Clemente <jmateu.clemente@gmail.com>",
   "dependencies": {
@@ -59,7 +60,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/angular/protractor.git"
+    "url": "git://github.com/Immoweb/protractor.git"
   },
   "bin": {
     "protractor": "bin/protractor",
