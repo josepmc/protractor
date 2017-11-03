@@ -1,15 +1,15 @@
-import { EventEmitter } from 'events';
+import {EventEmitter} from 'events';
 import * as q from 'q';
-import { promise as wdpromise, Session } from 'selenium-webdriver';
+import {promise as wdpromise, Session} from 'selenium-webdriver';
 import * as util from 'util';
 
-import { ProtractorBrowser } from './browser';
-import { Config } from './config';
-import { buildDriverProvider, DriverProvider } from './driverProviders';
-import { ConfigError } from './exitCodes';
-import { Logger } from './logger';
-import { Plugins } from './plugins';
-import { protractor } from './ptor';
+import {ProtractorBrowser} from './browser';
+import {Config} from './config';
+import {buildDriverProvider, DriverProvider} from './driverProviders';
+import {ConfigError} from './exitCodes';
+import {Logger} from './logger';
+import {Plugins} from './plugins';
+import {protractor} from './ptor';
 import * as helper from './util';
 
 declare let global: any;
@@ -51,15 +51,15 @@ export class Runner extends EventEmitter {
       let flow = wdpromise.controlFlow();
 
       this.ready_ = flow.execute(() => {
-        let nodedebug =
-          require('child_process').fork('debug', ['localhost:5858']);
-        process.on('exit', function () {
-          nodedebug.kill('SIGTERM');
-        });
-        nodedebug.on('exit', function () {
-          process.exit(1);
-        });
-      }, 'start the node debugger').then(() => {
+                          let nodedebug =
+                              require('child_process').fork('debug', ['localhost:5858']);
+                          process.on('exit', function() {
+                            nodedebug.kill('SIGTERM');
+                          });
+                          nodedebug.on('exit', function() {
+                            process.exit(1);
+                          });
+                        }, 'start the node debugger').then(() => {
         return flow.timeout(1000, 'waiting for debugger to attach');
       });
     }
@@ -73,7 +73,7 @@ export class Runner extends EventEmitter {
    * @public
    * @param {string/Fn} filenameOrFn
    */
-  setTestPreparer(filenameOrFn: string | Function): void {
+  setTestPreparer(filenameOrFn: string|Function): void {
     this.preparer_ = filenameOrFn;
   }
 
@@ -92,9 +92,9 @@ export class Runner extends EventEmitter {
     if (unknownFlags.length > 0 && !this.config_.disableChecks) {
       // TODO: Make this throw a ConfigError in Protractor 6.
       logger.warn(
-        'Ignoring unknown extra flags: ' + unknownFlags.join(', ') + '. This will be' +
-        ' an error in future versions, please use --disableChecks flag to disable the ' +
-        ' Protractor CLI flag checks. ');
+          'Ignoring unknown extra flags: ' + unknownFlags.join(', ') + '. This will be' +
+          ' an error in future versions, please use --disableChecks flag to disable the ' +
+          ' Protractor CLI flag checks. ');
     }
     return this.plugins_.onPrepare().then(() => {
       return helper.runFilenameOrFn_(this.config_.configDir, this.preparer_);
@@ -135,16 +135,16 @@ export class Runner extends EventEmitter {
     if (config.capabilities && config.capabilities.seleniumAddress) {
       config.seleniumAddress = config.capabilities.seleniumAddress;
     }
-    this.driverprovider_ = [];
+    this.driverprovider_ = [buildDriverProvider(config)];
     if (config.capabilities && config.capabilities.helperBrowsers)
       for (let caps of config.capabilities.helperBrowsers) {
         let cfg = {
           ...config,
+          capabilities: caps,
           helper: true,
-        }
+        };
         this.driverprovider_.push(buildDriverProvider(cfg));
       }
-    this.driverprovider_.push(buildDriverProvider({ ...config, helper: false }));
   }
 
   /**
@@ -152,15 +152,15 @@ export class Runner extends EventEmitter {
    * @private
    * @param {int} Standard unix exit code
    */
-  exit_ = function (exitCode: number): any {
+  exit_ = function(exitCode: number): any {
     return helper.runFilenameOrFn_(this.config_.configDir, this.config_.onCleanUp, [exitCode])
-      .then((returned): number | any => {
-        if (typeof returned === 'number') {
-          return returned;
-        } else {
-          return exitCode;
-        }
-      });
+        .then((returned): number | any => {
+          if (typeof returned === 'number') {
+            return returned;
+          } else {
+            return exitCode;
+          }
+        });
   };
 
   /**
@@ -212,9 +212,31 @@ export class Runner extends EventEmitter {
     }
     // Required by dart2js machinery.
     // https://code.google.com/p/dart/source/browse/branches/bleeding_edge/dart/sdk/lib/js/dart2js/js_dart2js.dart?spec=svn32943&r=32943#487
-    global.DartObject = function (o: any) {
+    global.DartObject = function(o: any) {
       this.o = o;
     };
+  }
+  installKeepAlive(
+      browser: ProtractorBrowser, keepAlive: number|{trigger?: () => void, seconds: number}): void {
+    if (keepAlive) {
+      let timeout = (keepAlive as {seconds: number}).seconds || typeof keepAlive === 'number' ?
+          keepAlive as number :
+          30;
+      let fn = (keepAlive as {trigger: () => void}).trigger || function() {
+        console.log('running keepAlive');
+        return browser.driver.getTitle();
+      };
+      this.removeKeepAlive(browser);
+      (browser.driver as any).keepAlive = setTimeout(fn, timeout * 1000);
+    }
+  }
+
+  removeKeepAlive(browser: ProtractorBrowser|any): void {
+    let keepAlive = browser.keepAlive || browser.driver && browser.driver.keepAlive;
+    if (keepAlive) {
+      console.log('teardown keepAlive');
+      keepAlive.unref();
+    }
   }
 
   /**
@@ -229,7 +251,9 @@ export class Runner extends EventEmitter {
    * @return {Protractor} a protractor instance.
    * @public
    */
-  createBrowser(plugins: any, parentBrowser?: ProtractorBrowser, provider: DriverProvider = this.driverprovider_[0]): any {
+  createBrowser(
+      plugins: any, parentBrowser?: ProtractorBrowser,
+      provider: DriverProvider = this.driverprovider_[0]): any {
     let driver = provider.getNewDriver();
     let config = provider.config_;
 
@@ -247,7 +271,10 @@ export class Runner extends EventEmitter {
       allScriptsTimeout: config.allScriptsTimeout,
       debuggerServerPort: config.debuggerServerPort,
       ng12Hybrid: config.ng12Hybrid,
-      waitForAngularEnabled: true as boolean | wdpromise.Promise<boolean>
+      waitForAngularEnabled: config.capabilities.waitForAngularEnabled === undefined ?
+          true :
+          config.capabilities.waitForAngularEnabled as boolean | wdpromise.Promise<boolean>,
+      helper: config.helper
     };
 
     if (parentBrowser) {
@@ -260,11 +287,12 @@ export class Runner extends EventEmitter {
       initProperties.debuggerServerPort = parentBrowser.debuggerServerPort;
       initProperties.ng12Hybrid = parentBrowser.ng12Hybrid;
       initProperties.waitForAngularEnabled = parentBrowser.waitForAngularEnabled();
+      initProperties.helper = parentBrowser.helper;
     }
 
     let browser_ = new ProtractorBrowser(
-      driver, initProperties.baseUrl, initProperties.rootElement,
-      initProperties.untrackOutstandingTimeouts, blockingProxyUrl);
+        driver, initProperties.baseUrl, initProperties.rootElement,
+        initProperties.untrackOutstandingTimeouts, blockingProxyUrl);
 
     browser_.params = initProperties.params;
     browser_.plugins_ = plugins || new Plugins({});
@@ -280,56 +308,61 @@ export class Runner extends EventEmitter {
     if (initProperties.ng12Hybrid) {
       browser_.ng12Hybrid = initProperties.ng12Hybrid;
     }
+    if (initProperties.helper) {
+      browser_.helper = initProperties.helper;
+    }
 
     browser_.ready =
-      browser_.ready
-        .then(() => {
-          return browser_.waitForAngularEnabled(initProperties.waitForAngularEnabled);
-        })
-        .then(() => {
-          return driver.manage().timeouts().setScriptTimeout(
-            initProperties.allScriptsTimeout || 0);
-        }).then(
-        null,
-        (error: Error) => console.log(
-          `Couldn't set the timeout to ${initProperties.allScriptsTimeout}.
-                                        The following error ocurred: ${error}`
-        ))
-        .then(() => {
-          return browser_;
-        });
+        browser_.ready
+            .then(() => {
+              return browser_.waitForAngularEnabled(initProperties.waitForAngularEnabled);
+            })
+            .then(() => {
+              return driver.manage().timeouts().setScriptTimeout(
+                  initProperties.allScriptsTimeout || 0);
+            })
+            .then(
+                null,
+                (error: Error) =>
+                    console.log(`Couldn't set the timeout to ${initProperties.allScriptsTimeout}.
+                                        The following error ocurred: ${error}`))
+            .then(() => {
+              return browser_;
+            });
 
     browser_.getProcessedConfig = () => {
       return wdpromise.when(config);
     };
 
     browser_.forkNewDriverInstance =
-      (useSameUrl: boolean, copyMockModules: boolean, copyConfigUpdates = true) => {
-        let newBrowser = this.createBrowser(plugins);
-        if (copyMockModules) {
-          newBrowser.mockModules_ = browser_.mockModules_;
-        }
-        if (useSameUrl) {
-          newBrowser.ready = newBrowser.ready
-            .then(() => {
-              return browser_.driver.getCurrentUrl();
-            })
-            .then((url: string) => {
-              return newBrowser.get(url);
-            })
-            .then(() => {
-              return newBrowser;
-            });
-        }
-        return newBrowser;
-      };
+        (useSameUrl: boolean, copyMockModules: boolean, copyConfigUpdates = true) => {
+          let newBrowser = this.createBrowser(plugins);
+          if (copyMockModules) {
+            newBrowser.mockModules_ = browser_.mockModules_;
+          }
+          if (useSameUrl) {
+            newBrowser.ready = newBrowser.ready
+                                   .then(() => {
+                                     return browser_.driver.getCurrentUrl();
+                                   })
+                                   .then((url: string) => {
+                                     return newBrowser.get(url);
+                                   })
+                                   .then(() => {
+                                     return newBrowser;
+                                   });
+          }
+          this.installKeepAlive(newBrowser, config.capabilities.keepAlive);
+          return newBrowser;
+        };
 
     let replaceBrowser = () => {
       let newBrowser = browser_.forkNewDriverInstance(false, true);
       if (browser_ === protractor.browser) {
         this.setupGlobals_(newBrowser);
       }
-      protractor.helperBrowsers = protractor.helperBrowsers.filter(browser => browser !== browser_).concat([newBrowser]);
+      protractor.helperBrowsers =
+          protractor.helperBrowsers.filter(browser => browser !== browser_).concat([newBrowser]);
       return newBrowser;
     };
 
@@ -347,9 +380,10 @@ export class Runner extends EventEmitter {
       if (browser_.controlFlowIsEnabled()) {
         return browser_.restartSync().ready;
       } else {
+        this.removeKeepAlive(browser_);
         return provider.quitDriver(browser_.driver)
-          .then(replaceBrowser)
-          .then(newBrowser => newBrowser.ready);
+            .then(replaceBrowser)
+            .then(newBrowser => newBrowser.ready);
       }
     };
 
@@ -358,6 +392,7 @@ export class Runner extends EventEmitter {
         throw TypeError('Unable to use `browser.restartSync()` when the control flow is disabled');
       }
 
+      this.removeKeepAlive(browser_);
       provider.quitDriver(browser_.driver);
       return replaceBrowser();
     };
@@ -373,8 +408,11 @@ export class Runner extends EventEmitter {
    * @private
    */
   shutdown_(): q.Promise<void[]> {
-    return q.all(this.driverprovider_.map(provider => DriverProvider.quitDrivers(
-      provider, provider.getExistingDrivers())));
+    return q.all(this.driverprovider_.map(provider => {
+      let drivers = provider.getExistingDrivers();
+      for (let driver of drivers) this.removeKeepAlive(driver);
+      return DriverProvider.quitDrivers(provider, drivers);
+    }));
   }
 
   /**
@@ -403,125 +441,127 @@ export class Runner extends EventEmitter {
 
     // 0) Wait for debugger
     return q(this.ready_)
-      .then(() => {
-        // 1) Setup environment
-        // noinspection JSValidateTypes
-        return q.all(this.driverprovider_.map(provider => provider.setupEnv()));
-      })
-      .then(() => {
-        // 2) Create a browser and setup globals
-        this.driverprovider_.map(provider => {
-          let browser = this.createBrowser(plugins, null, provider);
-          if (!provider.helper) {
-            this.setupGlobals_(browser);
-          }
-          return browser.ready.then(browser.getSession)
-            .then(
-            (session: Session) => {
-              logger.debug(
-                'WebDriver session successfully started with capabilities ' +
-                util.inspect(session.getCapabilities()));
-            },
-            (err: Error) => {
-              logger.error('Unable to start a WebDriver session.');
-              throw err;
-            });
-        });
-        // 3) Setup plugins
-      })
-      .then(() => {
-        return plugins.setup();
-        // 4) Execute test cases
-      })
-      .then(() => {
-        // Do the framework setup here so that jasmine and mocha globals are
-        // available to the onPrepare function.
-        let frameworkPath = '';
-        if (this.config_.framework === 'jasmine' || this.config_.framework === 'jasmine2') {
-          frameworkPath = './frameworks/jasmine.js';
-        } else if (this.config_.framework === 'mocha') {
-          frameworkPath = './frameworks/mocha.js';
-        } else if (this.config_.framework === 'debugprint') {
-          // Private framework. Do not use.
-          frameworkPath = './frameworks/debugprint.js';
-        } else if (this.config_.framework === 'explorer') {
-          // Private framework. Do not use.
-          frameworkPath = './frameworks/explorer.js';
-        } else if (this.config_.framework === 'custom') {
-          if (!this.config_.frameworkPath) {
-            throw new Error(
-              'When config.framework is custom, ' +
-              'config.frameworkPath is required.');
-          }
-          frameworkPath = this.config_.frameworkPath;
-        } else {
-          throw new Error(
-            'config.framework (' + this.config_.framework + ') is not a valid framework.');
-        }
-
-        if (this.config_.restartBrowserBetweenTests) {
-          // TODO(sjelin): replace with warnings once `afterEach` support is required
-          let restartDriver = () => {
-            if (!this.frameworkUsesAfterEach) {
-              this.restartPromise = q.all(protractor.helperBrowsers.map(browser => q(browser.restart())));
+        .then(() => {
+          // 1) Setup environment
+          // noinspection JSValidateTypes
+          return q.all(this.driverprovider_.map(provider => provider.setupEnv()));
+        })
+        .then(() => {
+          // 2) Create a browser and setup globals
+          return q.all(this.driverprovider_.map(provider => {
+            let browser = this.createBrowser(plugins, null, provider);
+            if (!provider.helper) {
+              this.setupGlobals_(browser);
             }
-          };
-          this.on('testPass', restartDriver);
-          this.on('testFail', restartDriver);
-        }
-
-        // We need to save these promises to make sure they're run, but we
-        // don't
-        // want to delay starting the next test (because we can't, it's just
-        // an event emitter).
-        pluginPostTestPromises = [];
-
-        this.on('testPass', (testInfo: any) => {
-          pluginPostTestPromises.push(plugins.postTest(true, testInfo));
-        });
-        this.on('testFail', (testInfo: any) => {
-          pluginPostTestPromises.push(plugins.postTest(false, testInfo));
-        });
-
-        logger.debug('Running with spec files ' + this.config_.specs);
-
-        return require(frameworkPath).run(this, this.config_.specs);
-        // 5) Wait for postTest plugins to finish
-      })
-      .then((testResults: any) => {
-        results = testResults;
-        return q.all(pluginPostTestPromises);
-        // 6) Teardown plugins
-      })
-      .then(() => {
-        return plugins.teardown();
-        // 7) Teardown
-      })
-      .then(() => {
-        results = helper.joinTestLogs(results, plugins.getResults());
-        this.emit('testsDone', results);
-        testPassed = results.failedCount === 0;
-        return q.all(this.driverprovider_.map(provider => {
-          if (provider.updateJob) {
-            return provider.updateJob({ 'passed': testPassed }).then(() => {
-              return provider.teardownEnv();
-            });
+            return browser.ready.then(browser.getSession)
+                .then(
+                    (session: Session) => {
+                      logger.debug(
+                          'WebDriver session successfully started with capabilities ' +
+                          util.inspect(session.getCapabilities()));
+                      this.installKeepAlive(browser, provider.config_.capabilities.keepAlive);
+                    },
+                    (err: Error) => {
+                      logger.error('Unable to start a WebDriver session.');
+                      throw err;
+                    });
+          }));
+          // 3) Setup plugins
+        })
+        .then(() => {
+          return plugins.setup();
+          // 4) Execute test cases
+        })
+        .then(() => {
+          // Do the framework setup here so that jasmine and mocha globals are
+          // available to the onPrepare function.
+          let frameworkPath = '';
+          if (this.config_.framework === 'jasmine' || this.config_.framework === 'jasmine2') {
+            frameworkPath = './frameworks/jasmine.js';
+          } else if (this.config_.framework === 'mocha') {
+            frameworkPath = './frameworks/mocha.js';
+          } else if (this.config_.framework === 'debugprint') {
+            // Private framework. Do not use.
+            frameworkPath = './frameworks/debugprint.js';
+          } else if (this.config_.framework === 'explorer') {
+            // Private framework. Do not use.
+            frameworkPath = './frameworks/explorer.js';
+          } else if (this.config_.framework === 'custom') {
+            if (!this.config_.frameworkPath) {
+              throw new Error(
+                  'When config.framework is custom, ' +
+                  'config.frameworkPath is required.');
+            }
+            frameworkPath = this.config_.frameworkPath;
           } else {
-            return provider.teardownEnv();
+            throw new Error(
+                'config.framework (' + this.config_.framework + ') is not a valid framework.');
           }
-        }));
-        // 8) Let plugins do final cleanup
-      })
-      .then(() => {
-        return plugins.postResults();
-        // 9) Exit process
-      })
-      .then(() => {
-        let exitCode = testPassed ? 0 : 1;
-        return this.exit_(exitCode);
-      })
-      .fin(() => {
-        return this.shutdown_();
-      });
+
+          if (this.config_.restartBrowserBetweenTests) {
+            // TODO(sjelin): replace with warnings once `afterEach` support is required
+            let restartDriver = () => {
+              if (!this.frameworkUsesAfterEach) {
+                this.restartPromise =
+                    q.all(protractor.helperBrowsers.map(browser => q(browser.restart())));
+              }
+            };
+            this.on('testPass', restartDriver);
+            this.on('testFail', restartDriver);
+          }
+
+          // We need to save these promises to make sure they're run, but we
+          // don't
+          // want to delay starting the next test (because we can't, it's just
+          // an event emitter).
+          pluginPostTestPromises = [];
+
+          this.on('testPass', (testInfo: any) => {
+            pluginPostTestPromises.push(plugins.postTest(true, testInfo));
+          });
+          this.on('testFail', (testInfo: any) => {
+            pluginPostTestPromises.push(plugins.postTest(false, testInfo));
+          });
+
+          logger.debug('Running with spec files ' + this.config_.specs);
+
+          return require(frameworkPath).run(this, this.config_.specs);
+          // 5) Wait for postTest plugins to finish
+        })
+        .then((testResults: any) => {
+          results = testResults;
+          return q.all(pluginPostTestPromises);
+          // 6) Teardown plugins
+        })
+        .then(() => {
+          return plugins.teardown();
+          // 7) Teardown
+        })
+        .then(() => {
+          results = helper.joinTestLogs(results, plugins.getResults());
+          this.emit('testsDone', results);
+          testPassed = results.failedCount === 0;
+          return q.all(this.driverprovider_.map(provider => {
+            if (provider.updateJob) {
+              return provider.updateJob({'passed': testPassed}).then(() => {
+                return provider.teardownEnv();
+              });
+            } else {
+              return provider.teardownEnv();
+            }
+          }));
+          // 8) Let plugins do final cleanup
+        })
+        .then(() => {
+          return plugins.postResults();
+          // 9) Exit process
+        })
+        .then(() => {
+          let exitCode = testPassed ? 0 : 1;
+          return this.exit_(exitCode);
+        })
+        .fin(() => {
+          return this.shutdown_();
+        });
   }
 }

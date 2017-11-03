@@ -1,4 +1,4 @@
-import { PluginConfig } from './plugins';
+import {PluginConfig} from './plugins';
 
 export interface DesiredCapabilities {
   [key: string]: any;
@@ -59,17 +59,18 @@ export interface DesiredCapabilities {
   // For a list of BrowserStack specific capabilities, visit
   // https://www.browserstack.com/automate/capabilities
   /**
-   * Additional Browsers that you may want to spawn. This takes the form of an array of Capabilities, and you can set them freely.
-   * This shall not be nested.
+   * Additional Browsers that you may want to spawn. This takes the form of an array of
+   * Capabilities, and you can set them freely. This shall not be nested.
    */
   helperBrowsers?: DesiredCapabilities[];
 
   /**
-   * Whether to install a function that will keep the browser alive. This is necessary as some providers will kill the session
-   * if no interaction was made for some time (e.g. BrowserStack).
+   * Whether to install a function that will keep the browser alive. This is necessary as some
+   * providers will kill the session if no interaction was made for some time (e.g. BrowserStack).
    */
-  keepAlive?: number | { seconds: number, trigger?: () => void };
-};
+  keepAlive?: number|{seconds: number, trigger?: () => void};
+  waitForAngularEnabled?: boolean;
+}
 
 export interface Config {
   [key: string]: any;
@@ -290,7 +291,7 @@ export interface Config {
   /**
    * Patterns to exclude specs.
    */
-  exclude?: Array<string> | string;
+  exclude?: Array<string>|string;
 
   /**
    * Alternatively, suites may be used. When run without a command line
@@ -615,7 +616,7 @@ export interface Config {
    *
    * See the full list at http://mochajs.org/
    */
-  mochaOpts?: { [key: string]: any; ui?: string; reporter?: string; };
+  mochaOpts?: {[key: string]: any; ui?: string; reporter?: string;};
 
   /**
    * See docs/plugins.md

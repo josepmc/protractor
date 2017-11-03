@@ -51,6 +51,7 @@ export declare let element: ElementHelper;
 export declare let By: ProtractorBy;
 export declare let by: ProtractorBy;
 export declare let ExpectedConditions: ProtractorExpectedConditions;
+export declare let helperBrowsers: ProtractorBrowser[];
 
 registerGlobal('browser');
 registerGlobal('$');
@@ -59,3 +60,4 @@ registerGlobal('element');
 registerGlobal('By');
 registerGlobal('by');
 registerGlobal('ExpectedConditions');
+registerGlobal('helperBrowsers');

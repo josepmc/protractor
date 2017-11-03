@@ -4,26 +4,26 @@ import * as firefox from 'selenium-webdriver/firefox';
 import * as http from 'selenium-webdriver/http';
 import * as remote from 'selenium-webdriver/remote';
 
-import { ElementHelper, ProtractorBrowser } from './browser';
-import { ElementArrayFinder, ElementFinder } from './element';
-import { ProtractorExpectedConditions } from './expectedConditions';
-import { ProtractorBy } from './locators';
+import {ElementHelper, ProtractorBrowser} from './browser';
+import {ElementArrayFinder, ElementFinder} from './element';
+import {ProtractorExpectedConditions} from './expectedConditions';
+import {ProtractorBy} from './locators';
 
 export class Ptor {
   // Variables tied to the global namespace.
   browser: ProtractorBrowser;
-  $ = function (search: string): ElementFinder {
+  $ = function(search: string): ElementFinder {
     return null;
   };
-  $$ = function (search: string): ElementArrayFinder {
+  $$ = function(search: string): ElementArrayFinder {
     return null;
   };
   element: ElementHelper;
   By: ProtractorBy;
   by: ProtractorBy;
   wrapDriver:
-  (webdriver: webdriver.WebDriver, baseUrl?: string, rootElement?: string,
-    untrackOutstandingTimeouts?: boolean) => ProtractorBrowser;
+      (webdriver: webdriver.WebDriver, baseUrl?: string, rootElement?: string,
+       untrackOutstandingTimeouts?: boolean) => ProtractorBrowser;
   ExpectedConditions: ProtractorExpectedConditions;
 
   /**
@@ -57,7 +57,7 @@ export class Ptor {
   until = webdriver.until;
   Command = require('selenium-webdriver/lib/command').Command;
   CommandName = require('selenium-webdriver/lib/command').Name;
-  utils = { firefox: firefox, http: http, remote: remote, chrome: chrome };
+  utils = {firefox: firefox, http: http, remote: remote, chrome: chrome};
 }
 
 export let protractor = new Ptor();
