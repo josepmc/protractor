@@ -1,4 +1,75 @@
-import {PluginConfig} from './plugins';
+import { PluginConfig } from './plugins';
+
+export interface DesiredCapabilities {
+  [key: string]: any;
+
+  browserName?: string;
+
+  /**
+   * Name of the process executing this capability.  Not used directly by
+   * protractor or the browser, but instead pass directly to third parties
+   * like BrowserStack and SauceLabs as the name of the job running this
+   * test
+   */
+  name?: string;
+
+  /**
+   * User defined name for the capability that will display in the results
+   * log. Defaults to the browser name
+   */
+  logName?: string;
+
+  /**
+   * Number of times to run this set of capabilities (in parallel, unless
+   * limited by maxSessions). Default is 1.
+   */
+  count?: number;
+
+  /**
+   * If this is set to be true, specs will be sharded by file (i.e. all
+   * files to be run by this set of capabilities will run in parallel).
+   * Default is false.
+   */
+  shardTestFiles?: boolean;
+
+  /**
+   * Maximum number of browser instances that can run in parallel for this
+   * set of capabilities. This is only needed if shardTestFiles is true.
+   * Default is 1.
+   */
+  maxInstances?: number;
+
+  /**
+   * Additional spec files to be run on this capability only.
+   */
+  specs?: string[];
+
+  /**
+   * Spec files to be excluded on this capability only.
+   */
+  exclude?: string[];
+
+  /**
+   * Optional: override global seleniumAddress on this capability only.
+   */
+  seleniumAddress?: string;
+
+  // Optional: Additional third-party specific capabilities can be
+  // specified here.
+  // For a list of BrowserStack specific capabilities, visit
+  // https://www.browserstack.com/automate/capabilities
+  /**
+   * Additional Browsers that you may want to spawn. This takes the form of an array of Capabilities, and you can set them freely.
+   * This shall not be nested.
+   */
+  helperBrowsers?: DesiredCapabilities[];
+
+  /**
+   * Whether to install a function that will keep the browser alive. This is necessary as some providers will kill the session
+   * if no interaction was made for some time (e.g. BrowserStack).
+   */
+  keepAlive?: number | { seconds: number, trigger?: () => void };
+};
 
 export interface Config {
   [key: string]: any;
@@ -219,7 +290,7 @@ export interface Config {
   /**
    * Patterns to exclude specs.
    */
-  exclude?: Array<string>|string;
+  exclude?: Array<string> | string;
 
   /**
    * Alternatively, suites may be used. When run without a command line
@@ -251,7 +322,7 @@ export interface Config {
    *
    * For a list of available capabilities, see
    * https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
-   * In addition, you may specify count, shardTestFiles, and maxInstances.
+   * In addition, you may specify count, shardTestFiles, and maxInstances and helperBrowsers.
    *
    * Example:
    * capabilities: {
@@ -266,66 +337,7 @@ export interface Config {
    *   seleniumAddress: 'http://localhost:4444/wd/hub'
    * }
    */
-  capabilities?: {
-
-    [key: string]: any;
-
-    browserName?: string;
-
-    /**
-     * Name of the process executing this capability.  Not used directly by
-     * protractor or the browser, but instead pass directly to third parties
-     * like BrowserStack and SauceLabs as the name of the job running this
-     * test
-     */
-    name?: string;
-
-    /**
-     * User defined name for the capability that will display in the results
-     * log. Defaults to the browser name
-     */
-    logName?: string;
-
-    /**
-     * Number of times to run this set of capabilities (in parallel, unless
-     * limited by maxSessions). Default is 1.
-     */
-    count?: number;
-
-    /**
-     * If this is set to be true, specs will be sharded by file (i.e. all
-     * files to be run by this set of capabilities will run in parallel).
-     * Default is false.
-     */
-    shardTestFiles?: boolean;
-
-    /**
-     * Maximum number of browser instances that can run in parallel for this
-     * set of capabilities. This is only needed if shardTestFiles is true.
-     * Default is 1.
-     */
-    maxInstances?: number;
-
-    /**
-     * Additional spec files to be run on this capability only.
-     */
-    specs?: string[];
-
-    /**
-     * Spec files to be excluded on this capability only.
-     */
-    exclude?: string[];
-
-    /**
-     * Optional: override global seleniumAddress on this capability only.
-     */
-    seleniumAddress?: string;
-
-    // Optional: Additional third-party specific capabilities can be
-    // specified here.
-    // For a list of BrowserStack specific capabilities, visit
-    // https://www.browserstack.com/automate/capabilities
-  };
+  capabilities?: DesiredCapabilities;
 
   /**
    * If you would like to run more than one instance of WebDriver on the same
@@ -603,7 +615,7 @@ export interface Config {
    *
    * See the full list at http://mochajs.org/
    */
-  mochaOpts?: {[key: string]: any; ui?: string; reporter?: string;};
+  mochaOpts?: { [key: string]: any; ui?: string; reporter?: string; };
 
   /**
    * See docs/plugins.md

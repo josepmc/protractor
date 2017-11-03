@@ -23,6 +23,11 @@ Once you are familiar with the tutorial, you’re ready to move on. To modify yo
 
 To better understand how Protractor works with the Selenium WebDriver and Selenium Server see the reference materials.
 
+This fork aims to add the following features to Protractor:
+
+- Native applications support
+- Multiple browser (concurrent) support. Start the test in one browser and end it in another.
+- Caching support (WIP)
 
 Getting Help
 ------------

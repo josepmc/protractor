@@ -1,6 +1,6 @@
 {
   "name": "protractor",
-  "description": "Webdriver E2E test wrapper for Angular.",
+  "description": "Webdriver E2E test wrapper with support for Angular, Mobile and concurrent browser testing.",
   "homepage": "https://github.com/angular/protractor",
   "keywords": [
     "angular",
@@ -10,7 +10,7 @@
     "webdriverjs",
     "selenium"
   ],
-  "author": "Julie Ralph <ju.ralph@gmail.com>",
+  "author": "Josep Mateu Clemente <jmateu.clemente@gmail.com>",
   "dependencies": {
     "@types/node": "^6.0.46",
     "@types/q": "^0.0.32",
