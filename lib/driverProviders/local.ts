@@ -16,9 +16,11 @@ import {Logger} from '../logger';
 
 import {DriverProvider} from './driverProvider';
 
-const SeleniumConfig = require('webdriver-manager/built/lib/config').Config;
-const SeleniumChrome = require('webdriver-manager/built/lib/binaries/chrome_driver').ChromeDriver;
-const SeleniumStandAlone = require('webdriver-manager/built/lib/binaries/standalone').StandAlone;
+const SeleniumConfig = require('@immoweb/webdriver-manager/built/lib/config').Config;
+const SeleniumChrome =
+    require('@immoweb/webdriver-manager/built/lib/binaries/chrome_driver').ChromeDriver;
+const SeleniumStandAlone =
+    require('@immoweb/webdriver-manager/built/lib/binaries/standalone').StandAlone;
 const remote = require('selenium-webdriver/remote');
 
 let logger = new Logger('local');

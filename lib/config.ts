@@ -68,7 +68,7 @@ export interface DesiredCapabilities {
    * Whether to install a function that will keep the browser alive. This is necessary as some
    * providers will kill the session if no interaction was made for some time (e.g. BrowserStack).
    */
-  keepAlive?: number|{seconds: number, trigger?: () => void};
+  keepAlive?: number|{seconds: number, trigger?: (browser: any) => void};
   waitForAngularEnabled?: boolean;
 }
 
