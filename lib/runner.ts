@@ -222,19 +222,18 @@ export class Runner extends EventEmitter {
       let timeout = (keepAlive as {seconds: number}).seconds || typeof keepAlive === 'number' ?
           keepAlive as number :
           30;
-      let fn = (keepAlive as {trigger: () => void}).trigger || function() {
-        console.log('running keepAlive');
-        return browser.driver.getTitle();
-      };
+      let fn = (keepAlive as {trigger: (browser: ProtractorBrowser) => void}).trigger ||
+          function(browser: ProtractorBrowser) {
+            return browser.driver.getTitle();
+          };
       this.removeKeepAlive(browser);
-      (browser.driver as any).keepAlive = setTimeout(fn, timeout * 1000);
+      (browser.driver as any).keepAlive = setTimeout(() => fn(browser), timeout * 1000);
     }
   }
 
   removeKeepAlive(browser: ProtractorBrowser|any): void {
     let keepAlive = browser.keepAlive || browser.driver && browser.driver.keepAlive;
     if (keepAlive) {
-      console.log('teardown keepAlive');
       keepAlive.unref();
     }
   }
