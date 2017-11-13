@@ -16,7 +16,7 @@ import {Logger} from '../logger';
 
 import {DriverProvider} from './driverProvider';
 
-const SeleniumConfig = require('webdriver-manager/built/lib/config').Config;
+const SeleniumConfig = require('@immoweb/webdriver-manager/built/lib/config').Config;
 
 let logger = new Logger('direct');
 export class Direct extends DriverProvider {

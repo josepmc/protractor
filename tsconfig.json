@@ -7,7 +7,16 @@
     "declaration": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "outDir": "built/"
+    "outDir": "built/",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ],
+      "webdriver-manager": [
+        "node_modules/@immoweb/webdriver-manager"
+      ]
+    }
   },
   "exclude": [
     "built",
