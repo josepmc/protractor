@@ -142,6 +142,8 @@ export class Runner extends EventEmitter {
           ...config,
           capabilities: caps,
           helper: true,
+          seleniumAddress: caps.seleniumAddress || config.seleniumAddress,
+          directConnect: caps.directConnect || config.directConnect
         };
         this.driverprovider_.push(buildDriverProvider(cfg));
       }
@@ -216,6 +218,7 @@ export class Runner extends EventEmitter {
       this.o = o;
     };
   }
+
   installKeepAlive(
       browser: ProtractorBrowser,
       keepAlive: number|{trigger?: (browser: ProtractorBrowser) => void, seconds: number}): void {
