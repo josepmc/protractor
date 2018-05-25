@@ -1,6 +1,6 @@
 import extend = require('extend');
 import { assert, By, ElementWrapper, Locator, NumberRange, oh } from '../../helpers';
-import { AbstractObject } from '../abstract';
+import { AbstractObject, AbstractObjectInitOpts } from '../abstract';
 import striptags = require('striptags');
 import tt = require('to-title-case');
 import clone = require('clone');
