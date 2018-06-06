@@ -1,0 +1,40 @@
+{
+    "name": "example-decorators",
+    "description": "Decorators for Protractor",
+    "version": "1.0.0",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/chai": "^4.0.4",
+        "@types/chai-as-promised": "7.1.0",
+        "@types/chance": "^0.7.35",
+        "@types/clone": "^0.1.30",
+        "@types/deasync": "^0.1.0",
+        "@types/extend": "^2.0.30",
+        "@types/gm": "^1.17.32",
+        "@types/puppeteer": "^0.13.9",
+        "@types/rimraf": "2.0.2",
+        "@types/tmp": "0.0.33",
+        "chai": "^4.1.2",
+        "chai-as-promised": "^7.1.1",
+        "chance": "^1.0.11",
+        "clone": "^2.1.1",
+        "deasync": "^0.1.10",
+        "extend": "^3.0.1",
+        "gm": "^1.23.0",
+        "mime-types": "^2.1.17",
+        "moment": "^2.18.1",
+        "parse-domain": "^1.1.0",
+        "protractor-perf": "^0.2.3",
+        "puppeteer": "^1.0.0",
+        "reflect-metadata": "^0.1.10",
+        "rimraf": "^2.6.2",
+        "stack-trace": "0.0.10",
+        "striptags": "^3.1.0",
+        "tmp": "0.0.33",
+        "to-title-case": "^1.0.0"
+    }
+}

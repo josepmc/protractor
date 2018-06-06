@@ -1,33 +1,38 @@
 {
-  "name": "@immoweb/protractor",
-  "description": "Webdriver E2E test wrapper for Angular. - Immoweb fork",
-  "homepage": "https://github.com/Immoweb/protractor",
+  "name": "protractor",
+  "description": "Webdriver E2E test wrapper for Angular. - With decorators",
+  "homepage": "https://github.com/josepmc/protractor",
   "keywords": [
     "angular",
     "test",
     "testing",
     "webdriver",
     "webdriverjs",
-    "selenium",
-    "immoweb"
+    "selenium"
   ],
   "author": "Josep Mateu Clemente <jmateu.clemente@gmail.com>",
+  "contributors": [
+    "Juan Antonio Garcia Marin <garcia.engineer@gmail.com>"
+  ],
   "dependencies": {
+    "@josepmc/webdriver-manager": "^12.0.6",
+    "@types/chance": "^0.7.35",
     "@types/node": "^6.0.46",
     "@types/q": "^0.0.32",
     "@types/selenium-webdriver": "~2.53.39",
     "blocking-proxy": "^1.0.0",
     "chalk": "^1.1.3",
+    "chance": "^1.0.11",
     "glob": "^7.0.3",
     "jasmine": "^2.5.3",
     "jasminewd2": "^2.1.0",
     "optimist": "~0.6.0",
     "q": "1.4.1",
+    "reflect-metadata": "^0.1.10",
     "saucelabs": "~1.3.0",
     "selenium-webdriver": "3.6.0",
     "source-map-support": "~0.4.0",
-    "webdriver-js-extender": "^1.0.0",
-    "@immoweb/webdriver-manager": "^12.0.6-1"
+    "webdriver-js-extender": "^1.0.0"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.28",
@@ -60,7 +65,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Immoweb/protractor.git"
+    "url": "git://github.com/josepmc/protractor.git"
   },
   "bin": {
     "protractor": "bin/protractor",
@@ -82,5 +87,5 @@
   "engines": {
     "node": ">=6.9.x"
   },
-  "version": "5.2.0-2"
+  "version": "5.2.0"
 }
