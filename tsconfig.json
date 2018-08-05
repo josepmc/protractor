@@ -16,7 +16,7 @@
         "*"
       ],
       "webdriver-manager": [
-        "node_modules/@immoweb/webdriver-manager"
+        "node_modules/@josepmc/webdriver-manager"
       ]
     }
   },
@@ -27,6 +27,7 @@
     "website",
     "scripts",
     "exampleTypescript",
+    "decorators",
     "spec/**/*"
   ]
 }

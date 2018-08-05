@@ -45,7 +45,7 @@ export class BrowserStack extends DriverProvider {
           headers: headers
         };
 
-        let req = https.request(options, (res) => {
+        let req = https.request(options as any, (res) => {
           res.on('data', (data: Buffer) => {
             let info = JSON.parse(data.toString());
             if (info && info.automation_session && info.automation_session.browser_url) {
@@ -66,7 +66,7 @@ export class BrowserStack extends DriverProvider {
         });
         let jobStatus = update.passed ? 'completed' : 'error';
         options.method = 'PUT';
-        let update_req = https.request(options, (res) => {
+        let update_req = https.request(options as any, (res) => {
           let responseStr = '';
           res.on('data', (data: Buffer) => {
             responseStr += data.toString();

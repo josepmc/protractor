@@ -132,10 +132,14 @@ export class Runner extends EventEmitter {
    * 5) try to find the seleniumServerJar in protractor/selenium
    */
   loadDriverProviders_(config: Config) {
-    if (config.capabilities && config.capabilities.seleniumAddress) {
-      config.seleniumAddress = config.capabilities.seleniumAddress;
-    }
-    this.driverprovider_ = [buildDriverProvider(config)];
+    let cfg = {
+      ...config,
+      helper: false,
+      seleniumAddress: config.capabilities.seleniumAddress || config.seleniumAddress,
+      directConnect: config.capabilities.directConnect || config.directConnect,
+      extraConfig: config.capabilities.extraConfig || config.extraConfig,
+    };
+    this.driverprovider_ = [buildDriverProvider(cfg)];
     if (config.capabilities && config.capabilities.helperBrowsers)
       for (let caps of config.capabilities.helperBrowsers) {
         let cfg = {
@@ -143,7 +147,8 @@ export class Runner extends EventEmitter {
           capabilities: caps,
           helper: true,
           seleniumAddress: caps.seleniumAddress || config.seleniumAddress,
-          directConnect: caps.directConnect || config.directConnect
+          directConnect: caps.directConnect || config.directConnect,
+          extraConfig: caps.extraConfig || config.extraConfig,
         };
         this.driverprovider_.push(buildDriverProvider(cfg));
       }
