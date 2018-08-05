@@ -1,5 +1,5 @@
 {
-  "name": "protractor",
+  "name": "@josepmc/protractor",
   "description": "Webdriver E2E test wrapper for Angular. - With decorators",
   "homepage": "https://github.com/josepmc/protractor",
   "keywords": [
@@ -87,5 +87,5 @@
   "engines": {
     "node": ">=6.9.x"
   },
-  "version": "5.2.0"
+  "version": "5.2.0-6"
 }
