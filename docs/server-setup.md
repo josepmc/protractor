@@ -61,7 +61,23 @@ Please note that if you set seleniumAddress, the settings for `seleniumServerJar
 Remote Selenium Server
 ----------------------
 
-To run your tests against a remote Selenium Server, you will need an account with a service that hosts the server (and the browser drivers). Protractor has built in support for [BrowserStack](https://www.browserstack.com) and [Sauce Labs](http://www.saucelabs.com).
+To run your tests against a remote Selenium Server, you will need an account with a service that hosts the server (and the browser drivers). Protractor has built in support for [BrowserStack](https://www.browserstack.com) , [Sauce Labs](http://www.saucelabs.com) and [TestObject](https://www.testobject.com).
+
+**Using TestObject as remote Selenium Server**
+
+In your config file, set these options:
+ - `testobjectUser` -  The username for your TestObject account.
+ - `testobjectKey` -  The key for your TestObject account.
+
+Please note that if you set `testobjectUser` and `testobjectKey`, the settings for `kobitonUser`, `kobitonKey`, `browserstackUser`, `browserstackKey`, `seleniumServerJar`, `seleniumPort`, `seleniumArgs`, `sauceUser` and `sauceKey` will be ignored.
+
+**Using Kobiton as remote Selenium Server**
+
+In your config file, set these options:
+ - `kobitonUser` -  The username for your Kobiton account.
+ - `kobitonKey` -  The API key from your Kobiton account.
+
+Please note that if you set `kobitonUser` and `kobitonKey`, the settings for `browserstackUser`, `browserstackKey`, `seleniumServerJar`, `seleniumPort`, `seleniumArgs`, `sauceUser` and `sauceKey` will be ignored.
 
 **Using BrowserStack as remote Selenium Server**
 
@@ -92,3 +108,37 @@ Protractor can test directly against Chrome and Firefox without using a Selenium
  - `directConnect: true` -  Your test script communicates directly Chrome Driver or Firefox Driver, bypassing any Selenium Server. If this is true, settings for `seleniumAddress` and `seleniumServerJar` will be ignored. If you attempt to use a browser other than Chrome or Firefox an error will be thrown.
 
 The advantage of directly connecting to browser drivers is that your test scripts may start up and run faster.
+
+Re-using an Existing WebDriver
+------------------------------
+
+The use case for re-using an existing WebDriver is when you have existing
+`selenium-webdriver` code and are already in control of how the WebDriver is
+created, but would also like Protractor to use the same browser, so you can
+use protractor's element locators and the rest of its API. This could be
+done with the `attachSession` driver provider, but the `attachSession` API is
+being removed in `selenium-webdriver` 4.0.0.
+
+Instead of a protractor config file, you create a config object in your test
+setup code, and add your already-created WebDriver object and base URL.
+
+```javascript
+const ProtractorConfigParser = require('protractor/built/configParser').ConfigParser;
+const ProtractorRunner = require('protractor/built/runner').Runner;
+
+const ptorConfig = new ProtractorConfigParser().config_;
+ptorConfig.baseUrl = myExistingBaseUrl;
+ptorConfig.seleniumWebDriver = myExistingWebDriver;
+ptorConfig.noGlobals = true; // local preference
+
+// looks similar to protractor/built/runner.js run()
+const ptorRunner = new ProtractorRunner(ptorConfig);
+ptorRunner.driverProvider_.setupEnv();
+const browser = ptorRunner.createBrowser();
+ptorRunner.setupGlobals_(browser); // now you can access protractor.$, etc.
+```
+
+Note that this driver provider leaves you in control of quitting the driver,
+but that also means Protractor API calls that expect the driver to properly
+quit and/or restart the browser, e.g. `restart`, `restartSync`, and
+`forkNewDriverInstance`, will not behave as documented.

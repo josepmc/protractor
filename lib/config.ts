@@ -1,3 +1,5 @@
+import {WebDriver} from 'selenium-webdriver';
+
 import {PluginConfig} from './plugins';
 
 export interface DesiredCapabilities {
@@ -234,7 +236,37 @@ export interface Config {
    */
   sauceSeleniumAddress?: string;
 
-  // ---- 4. To use remote browsers via BrowserStack ---------------------------
+  // ---- 4. To use remote browsers via TestObject ---------------------------
+
+  /**
+   * If testobjectUser and testobjectKey are specified, kobitonUser, kobitonKey, browserstackUser,
+   * browserStackKey and seleniumServerJar will be ignored. The tests will be run remotely using
+   * TestObject.
+   */
+  testobjectUser?: string;
+  /**
+   * If testobjectUser and testobjectKey are specified, kobitonUser, kobitonKey, browserStackUser,
+   * browserStackKey and seleniumServerJar will be ignored. The tests will be run remotely using
+   * TestObject.
+   */
+  testobjectKey?: string;
+
+  // ---- 5. To use remote browsers via Kobiton ---------------------------
+
+  /**
+   * If kobitonUser and kobitonKey are specified, testobjectUser, testojbectKey, browserstackUser,
+   * browserStackKey and seleniumServerJar will be ignored. The tests will be run remotely using
+   * TestObject.
+   */
+  kobitonUser?: string;
+  /**
+   * If kobitonUser and kobitonKey are specified, testobjectUser, testojbectKey, browserStackUser,
+   * browserStackKey and seleniumServerJar will be ignored. The tests will be run remotely using
+   * TestObject.
+   */
+  kobitonKey?: string;
+
+  // ---- 6. To use remote browsers via BrowserStack ---------------------------
 
   /**
    * If browserstackUser and browserstackKey are specified, seleniumServerJar
@@ -247,7 +279,14 @@ export interface Config {
    */
   browserstackKey?: string;
 
-  // ---- 5. To connect directly to Drivers ------------------------------------
+  /**
+   * Proxy server to be used for connecting to BrowserStack APIs
+   * e.g. "http://proxy.example.com:1234".
+   * This should be used when you are behind a proxy server.
+   */
+  browserstackProxy?: string;
+
+  // ---- 7. To connect directly to Drivers ------------------------------------
 
   /**
    * If true, Protractor will connect directly to the browser Drivers
@@ -262,6 +301,12 @@ export interface Config {
    * firefox in the default locations.
    */
   firefoxPath?: string;
+
+  // ---- 8. To re-use an existing WebDriver object ---------------------------
+
+  // This would not appear in a configuration file. Instead a configuration
+  // object would be created that includes an existing webdriver.
+  seleniumWebDriver?: WebDriver;
 
   // ---------------------------------------------------------------------------
   // ----- What tests to run ---------------------------------------------------
@@ -547,6 +592,13 @@ export interface Config {
    * synchronization, which is also experimental.
    */
   highlightDelay?: number;
+
+  /**
+   * Protractor log level
+   *
+   * default: INFO
+   */
+  logLevel?: 'ERROR'|'WARN'|'INFO'|'DEBUG';
 
   // ---------------------------------------------------------------------------
   // ----- The test framework
