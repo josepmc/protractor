@@ -1,6 +1,5 @@
 import { After, HookScenarioResult, World, Status, setDefaultTimeout, Before } from 'cucumber';
 import { oh, WindowInfo, By } from 'framework/helpers';
-import { Metamask, Network } from 'extensions/metamask';
 const debugMode = process.env.IS_DEBUG;
 
 process.on('uncaughtException', function (err) {

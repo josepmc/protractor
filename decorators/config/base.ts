@@ -256,7 +256,6 @@ export = (opts = { params: {} }) => {
                     },
                     browserName: 'firefox',
                     //TODO: Use get-firefox to download a local copy
-                    //TODO: Implement metamask support
                 }
                 break;
             }
@@ -268,7 +267,6 @@ export = (opts = { params: {} }) => {
                         downloadManager: dlmgr.getConfig(),
                     },
                     browserName: 'edge',
-                    //TODO: Implement metamask support
                 }
                 break;
             }
@@ -280,7 +278,6 @@ export = (opts = { params: {} }) => {
                         downloadManager: dlmgr.getConfig(),
                     },
                     browserName: 'safari',
-                    //TODO: Implement metamask support
                 }
                 break;
             }
