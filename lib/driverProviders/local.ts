@@ -38,8 +38,7 @@ export class Local extends DriverProvider {
           'Attempting to find the SeleniumServerJar in the default ' +
           'location used by webdriver-manager');
       try {
-        let updateJson = path.resolve(SeleniumConfig.getSeleniumDir(), 'update-config.json');
-        let updateConfig = JSON.parse(fs.readFileSync(updateJson).toString());
+        let updateConfig = SeleniumConfig.getUpdateConfig();
         this.config_.seleniumServerJar = updateConfig.standalone.last;
       } catch (err) {
         throw new BrowserError(
@@ -61,8 +60,7 @@ export class Local extends DriverProvider {
             'location used by webdriver-manager');
 
         try {
-          let updateJson = path.resolve(SeleniumConfig.getSeleniumDir(), 'update-config.json');
-          let updateConfig = JSON.parse(fs.readFileSync(updateJson).toString());
+          let updateConfig = SeleniumConfig.getUpdateConfig();
           this.config_.chromeDriver = updateConfig.chrome.last;
         } catch (err) {
           throw new BrowserError(
@@ -92,8 +90,7 @@ export class Local extends DriverProvider {
             'location used by webdriver-manager');
 
         try {
-          let updateJson = path.resolve(SeleniumConfig.getSeleniumDir(), 'update-config.json');
-          let updateConfig = JSON.parse(fs.readFileSync(updateJson).toString());
+          let updateConfig = SeleniumConfig.getUpdateConfig();
           this.config_.geckoDriver = updateConfig.gecko.last;
         } catch (err) {
           throw new BrowserError(

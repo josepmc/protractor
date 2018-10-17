@@ -16,7 +16,7 @@ import {Logger} from '../logger';
 
 import {DriverProvider} from './driverProvider';
 
-const SeleniumConfig = require('@josepmc/webdriver-manager/built/lib/config').Config;
+const SeleniumConfig = require('webdriver-manager/built/lib/config').Config;
 
 let logger = new Logger('direct');
 export class Direct extends DriverProvider {
@@ -63,8 +63,7 @@ export class Direct extends DriverProvider {
           chromeDriverFile = this.config_.chromeDriver;
         } else {
           try {
-            let updateJson = path.resolve(SeleniumConfig.getSeleniumDir(), 'update-config.json');
-            let updateConfig = JSON.parse(fs.readFileSync(updateJson).toString());
+            let updateConfig = SeleniumConfig.getUpdateConfig();
             chromeDriverFile = updateConfig.chrome.last;
           } catch (e) {
             throw new BrowserError(
@@ -95,8 +94,7 @@ export class Direct extends DriverProvider {
           geckoDriverFile = this.config_.geckoDriver;
         } else {
           try {
-            let updateJson = path.resolve(SeleniumConfig.getSeleniumDir(), 'update-config.json');
-            let updateConfig = JSON.parse(fs.readFileSync(updateJson).toString());
+            let updateConfig = SeleniumConfig.getUpdateConfig();
             geckoDriverFile = updateConfig.gecko.last;
           } catch (e) {
             throw new BrowserError(
