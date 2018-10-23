@@ -15,7 +15,7 @@
     "Juan Antonio Garcia Marin <garcia.engineer@gmail.com>"
   ],
   "dependencies": {
-    "@josepmc/webdriver-manager": "^12.0.6-4",
+    "@josepmc/webdriver-manager": "^12.0.6-5",
     "@types/chance": "^0.7.35",
     "@types/node": "^6.0.46",
     "@types/q": "^0.0.32",
@@ -89,5 +89,5 @@
   "engines": {
     "node": ">=6.9.x"
   },
-  "version": "5.4.0-3"
+  "version": "5.4.0-5"
 }

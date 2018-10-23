@@ -16,7 +16,7 @@ import {Logger} from '../logger';
 
 import {DriverProvider} from './driverProvider';
 
-const SeleniumConfig = require('webdriver-manager/built/lib/config').Config;
+const SeleniumConfig = require('@josepmc/webdriver-manager/built/lib/config').Config;
 const remote = require('selenium-webdriver/remote');
 
 let logger = new Logger('local');
