@@ -1,3 +1,65 @@
+# 5.4.2
+
+## Features
+
+- ([db1b638](https://github.com/angular/protractor/commit/db1b6381d463c7cecf11dece2bf9412fecbd6f4d))
+  feat(saucelabs): add sauceRegion support for eu datacenters (#5083)
+
+  This change allows user to define the backend region from sauce via the `sauceRegion` property,
+  e.g.
+
+  ```js
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+     sauceRegion: 'eu',
+  ```
+   Will run the test against `https://ondemand.eu-central-1.saucelabs.com:443/wd/hub/.`
+
+  ```js
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+     sauceRegion: 'us',
+
+     // the default
+     sauceUser: process.env.SAUCE_USERNAME,
+     sauceKey: process.env.SAUCE_ACCESS_KEY,
+  ```
+   Will run the test against https://ondemand.saucelabs.com:443/wd/hub/
+
+##  Fixes
+
+- ([f5dbe13](https://github.com/angular/protractor/commit/f5dbe13ad6755ae812627d8056527e351db8b34c))
+  fix(deps): @types/node is now a dev dependency
+
+# 5.4.1
+
+## Features
+
+- ([7b08083](https://github.com/angular/protractor/commit/7b0808396458fbc2bd46c7e929f4effecb2a3f1e))
+  feat(driverProvider): Add useExistingWebDriver driver provider (#4756)
+
+- ([249e657](https://github.com/angular/protractor/commit/249e657baa605257c268f09078d56219776db9b1))
+  feat(example): add examples of usage protractor framework with angular-material components;
+  (#4891)
+
+## Fixes
+
+- ([39485ca](https://github.com/angular/protractor/commit/39485ca49ad751814ae112b224ae054e697e102f))
+  fix(typo): fixed typo in EC expectation alias (#4952)
+
+- ([07fefeb](https://github.com/angular/protractor/commit/07fefeb9636f8b3506df2eacbdb4ada29f50fbbd))
+  fix(browser): browser.navigate() return type. (#4932)
+
+  Changing return type of browser.navigate() to be Navigation instead of any.
+
+- ([0b1820c](https://github.com/angular/protractor/commit/0b1820c6c1d8b13e8fb2e64f27e4fe1d3cbcdd73))
+  fix(package-lock.json): update package-lock.json to match package.json. (#4931)
+
+## Dependencies
+
+- ([2632bb6](https://github.com/angular/protractor/commit/2632bb67c3ac7773e8b769cd5c5ee5c6d7b69f3d))
+  deps(webdriver_js_extender): update webdriver_js_extender to 2.1 (#4934)
+
 # 5.4.0
 
 ## Features

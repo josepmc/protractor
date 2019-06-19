@@ -44,8 +44,10 @@ After(async function (this: World, scenario: HookScenarioResult) {
             case 'image':
                 let base64 = await oh.browser.takeScreenshot();
                 await world.attach(base64, 'image/png');
+                break;
             case 'html':
-                console.log(await oh.browser.getPageSource());
+                console.log(await oh.html(By.xpath('.//body')));
+                break;
         }
     }
     if (scenario.result.status === Status.FAILED) {

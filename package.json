@@ -15,9 +15,7 @@
     "Juan Antonio Garcia Marin <garcia.engineer@gmail.com>"
   ],
   "dependencies": {
-    "@josepmc/webdriver-manager": "^12.0.6-5",
-    "@types/chance": "^0.7.35",
-    "@types/node": "^6.0.46",
+    "@josepmc/webdriver-manager": "^13.0.0-1",
     "@types/q": "^0.0.32",
     "@types/selenium-webdriver": "^3.0.0",
     "blocking-proxy": "^1.0.0",
@@ -33,10 +31,11 @@
     "saucelabs": "^1.5.0",
     "selenium-webdriver": "3.6.0",
     "source-map-support": "~0.4.0",
-    "webdriver-js-extender": "2.0.0",
+    "webdriver-js-extender": "2.1.0",
     "webdriver-manager": "^12.0.6"
   },
   "devDependencies": {
+    "@types/node": "^6.0.46",
     "@types/chalk": "^0.4.28",
     "@types/glob": "^5.0.29",
     "@types/jasmine": "^2.5.47",
@@ -89,5 +88,5 @@
   "engines": {
     "node": ">=6.9.x"
   },
-  "version": "5.4.0-5"
+  "version": "5.4.2-1"
 }
