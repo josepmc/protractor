@@ -14,7 +14,7 @@
         "test": "npm run protractor -- protractor.conf.js"
     },
     "dependencies": {
-        "@josepmc/protractor": "^5.4.0-1",
+        "@josepmc/protractor": "^5.4.2-2",
         "@types/chai": "^4.0.4",
         "@types/chai-as-promised": "7.1.0",
         "@types/chance": "^0.7.35",

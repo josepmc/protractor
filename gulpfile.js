@@ -102,17 +102,11 @@ gulp.task('tsc:es5', function(done) {
   runSpawn(done, './scripts/compile_to_es5.sh');
 });
 
-gulp.task('compile_to_es5', function(done) {
-  runSequence('checkVersion', 'tsc:es5', 'built:copy', done);
-});
+gulp.task('compile_to_es5', gulp.series('checkVersion', 'tsc:es5', 'built:copy'));
 
-gulp.task('prepublish', function(done) {
-  runSequence('checkVersion', 'tsc', 'built:copy', done);
-});
+gulp.task('prepublish', gulp.series('checkVersion', 'tsc', 'built:copy'));
 
-gulp.task('pretest', function(done) {
-  runSequence('checkVersion',
-    ['webdriver:update', 'tslint', 'format'], 'tsc', 'built:copy', 'tsc:spec',  done);
-});
+gulp.task('pretest', gulp.series('checkVersion',
+    ['webdriver:update', 'tslint', 'format'], 'tsc', 'built:copy', 'tsc:spec'));
 
-gulp.task('default',['prepublish']);
+gulp.task('default', gulp.series('prepublish'));
