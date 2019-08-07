@@ -55,6 +55,8 @@ export class Direct extends DriverProvider {
    */
   getNewDriver(): WebDriver {
     let driver: WebDriver;
+    let driverArgs = this.config_.capabilities.driverArgs || [];
+    if (!(driverArgs instanceof Array)) driverArgs = [driverArgs];
 
     switch (this.config_.capabilities.browserName) {
       case 'chrome':
@@ -80,7 +82,9 @@ export class Direct extends DriverProvider {
                   '. Run \'webdriver-manager update\' to download binaries.');
         }
 
-        let chromeService = new ChromeServiceBuilder(chromeDriverFile).build();
+        let chrome_service = new ChromeServiceBuilder(chromeDriverFile);
+        for (let arg of driverArgs) chrome_service.addArguments(arg);
+        const chromeService = chrome_service.build();
         // driver = ChromeDriver.createSession(new Capabilities(this.config_.capabilities),
         // chromeService);
         // TODO(ralphj): fix typings
@@ -114,7 +118,9 @@ export class Direct extends DriverProvider {
         // TODO (mgiambalvo): Turn this into an import when the selenium typings are updated.
         const FirefoxServiceBuilder = require('selenium-webdriver/firefox').ServiceBuilder;
 
-        let firefoxService = new FirefoxServiceBuilder(geckoDriverFile).build();
+        let ff_service = new FirefoxServiceBuilder(geckoDriverFile);
+        for (let arg of driverArgs) ff_service.addArguments(arg);
+        const firefoxService = ff_service.build();
         // TODO(mgiambalvo): Fix typings.
         driver =
             require('selenium-webdriver/firefox')
